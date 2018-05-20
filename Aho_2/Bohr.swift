@@ -7,12 +7,23 @@
 //
 
 class Bohr {
+    let char: Character
+    var isComplete = false
+    var goodSuffLink: Bohr?
+    var suffLink    : Bohr?
+    var parent      : Bohr?
+    
+    var sons            = [Character: Bohr]()
+    var nextStateByChar = [Character: Bohr]()
+    
+    
     init(withChar char: Character) {
         self.char = char
     }
     
+    
     func getSuffLink() -> Bohr {
-        if self.suffLink == nil {
+        guard let suffLink = self.suffLink else {
             if self.parent == nil {
                 // I'm root
                 self.suffLink = self
@@ -22,48 +33,42 @@ class Bohr {
             } else {
                 self.suffLink = self.parent!.getSuffLink().getAutoMoveWithChar(self.char)
             }
+            
+            return self.suffLink!
         }
         
-        return self.suffLink!
+        return suffLink
     }
     
     func getGoodSuffLink() -> Bohr {
-        if self.goodSuffLink == nil {
-            let u = self.getSuffLink()
-            
-            if u.parent == nil {
-                self.goodSuffLink = u
-            } else {
-                self.goodSuffLink = u.isComplete ? u : u.getGoodSuffLink()
+        guard let goodLink = self.goodSuffLink else {
+            if self.goodSuffLink == nil {
+                let u = self.getSuffLink()
+                
+                if u.parent == nil {
+                    self.goodSuffLink = u
+                } else {
+                    self.goodSuffLink = u.isComplete ? u : u.getGoodSuffLink()
+                }
             }
+            return self.goodSuffLink!
         }
         
-        return self.goodSuffLink!
+        return goodLink
     }
     
     func getAutoMoveWithChar(_ char: Character) -> Bohr {
-        if self.nextStateByChar[char] == nil {
+        guard let next = self.nextStateByChar[char] else {
             if let forward = self.sons[char] {
                 self.nextStateByChar[char] = forward
+                return forward
             } else {
-                if self.parent == nil {
-                    self.nextStateByChar[char] = self
-                } else {
-                    self.nextStateByChar[char] = self.getSuffLink().getAutoMoveWithChar(char)
-                }
+                self.nextStateByChar[char] = self.parent == nil ? self : self.getSuffLink().getAutoMoveWithChar(char)
             }
+
+            return self.nextStateByChar[char]!
         }
-        
-        return self.nextStateByChar[char]!
+
+        return next
     }
-    
-    
-    let char: Character
-    var isComplete = false
-    weak var goodSuffLink: Bohr?
-    weak var suffLink    : Bohr?
-    weak var parent      : Bohr?
-    
-    var sons = [Character: Bohr]()
-    var nextStateByChar = [Character: Bohr]()
 }

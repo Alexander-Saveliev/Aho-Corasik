@@ -7,6 +7,9 @@
 //
 
 class AhoAutomat {
+    private let root = Bohr(withChar: "\0")
+    private var current: Bohr
+    
     init() {
         current = root
     }
@@ -65,6 +68,7 @@ class AhoAutomat {
     public func reset() {
         current = root
     }
+
     
     public func setNextStateByChar(_ char: Character) {
         current = current.getAutoMoveWithChar(char)
@@ -91,8 +95,4 @@ class AhoAutomat {
     }
     
     #endif
-    
-    
-    private let root = Bohr(withChar: "\0")
-    private var current: Bohr
 }

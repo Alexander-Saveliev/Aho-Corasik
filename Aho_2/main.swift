@@ -56,9 +56,7 @@ func printReport(_ foundWords: [SublineElement]) {
 // for safe out without throwing
 func main() {
     let inputFileName  = "input.txt"
-    
     let inputFileURL  = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/\(inputFileName)")
-    
     
     var input = [String]()
 
@@ -79,28 +77,22 @@ func main() {
     let replaceFileName = input[n + 1]
     let replaceFileURL  = URL(fileURLWithPath: FileManager.default.currentDirectoryPath + "/\(replaceFileName)")
     
-    
     var lines = [String]()
     
     do {
-        lines = try String(contentsOf: replaceFileURL, encoding: .utf8).components(separatedBy: "\n")
+        lines = try String(contentsOf: replaceFileURL, encoding: .utf8).lowercased().components(separatedBy: "\n")
     } catch {
         print("Error: ", error)
         return
     }
-
     
     var foundWords   = [SublineElement]()
     for (lineNumber, line) in lines.enumerated() {
-        let percent = String(format: "%.02f", Double(lineNumber) / Double(lines.count) * 100)
-        print(percent, "%")
-        
         for (positionNumber, char) in line.enumerated() {
-            aho.setNextStateByChar(Character(String(char).lowercased()))
+            aho.setNextStateByChar(char)
             if let found = aho.getCurrentStrings() {
                 for foundWord in found {
                     let data = SublineElement(position: positionNumber, line: lineNumber, word: foundWord)
-                    
                     foundWords.append(lineAndPositionByInput(lines, andElement: data))
                 }
             }
@@ -108,11 +100,17 @@ func main() {
         aho.setNextStateByChar(" ")
     }
     
+    print("end")
     printReport(foundWords)
+    
 }
 
+var sum = 0.0
+let startDate = Date()
 
 main()
 
-
+let endDate = Date()
+sum += endDate.timeIntervalSince1970 - startDate.timeIntervalSince1970
+print(sum)
 
