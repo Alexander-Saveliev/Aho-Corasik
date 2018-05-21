@@ -80,6 +80,7 @@ func main() {
     var lines = [String]()
     
     do {
+        // простое построчное чтение работает немного медленнее
         lines = try String(contentsOf: replaceFileURL, encoding: .utf8).lowercased().components(separatedBy: "\n")
     } catch {
         print("Error: ", error)
@@ -87,6 +88,7 @@ func main() {
     }
     
     var foundWords   = [SublineElement]()
+    
     for (lineNumber, line) in lines.enumerated() {
         for (positionNumber, char) in line.enumerated() {
             aho.setNextStateByChar(char)
@@ -100,7 +102,6 @@ func main() {
         aho.setNextStateByChar(" ")
     }
     
-    print("end")
     printReport(foundWords)
     
 }

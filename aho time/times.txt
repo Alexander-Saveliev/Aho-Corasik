@@ -1,16 +1,6 @@
-Times
+===== updated =====
 
-setNextStateByChar  sum: 11.3017981052399
-addString	    sum: 0.000607728958129883
-getCurrentStrings   sum: 1.89182996749878
-addString	    sum: 0.000597238540649414
-reset		    sum: 0.0
-
-
-
-
-===== setNextStateByChar =====
-
-getAutoMoveWithChar sum: 9.1820592880249
-getGoodSuffLink     sum: 0.851316690444946
-getSuffLink 	    sum: 2.43186950683594e-05
+aho.setNextStateByChar 	   sum: 8.71106791496277
+получение найденных строк  sum: 1.22113347053528
+printReport   	              : 0.0211250782012939
+reading			      : 1.0911979675293
